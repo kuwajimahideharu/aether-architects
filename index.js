@@ -556,3 +556,224 @@ document.addEventListener('DOMContentLoaded', () => {
         targetY = Math.max(-1, Math.min(1, (beta - 45) / 45));
     }
 });
+
+// ========================================
+// Contact セクション アニメーション
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const contactSection = document.querySelector('.contact-section');
+    const contactHeader = document.querySelector('.contact-header');
+    const contactForm = document.querySelector('.contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const magneticWrapper = document.getElementById('magnetic-wrapper');
+    const thankYouMessage = document.getElementById('thank-you-message');
+    const formInputs = document.querySelectorAll('.form-input');
+
+    if (!contactSection) return;
+
+    // ヘッダーアニメーション
+    if (contactHeader) {
+        gsap.to(contactHeader, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: contactHeader,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    }
+
+    // フォームアニメーション
+    if (contactForm) {
+        gsap.to(contactForm, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.3,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: contactForm,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    }
+
+    // ========================================
+    // マグネティック効果（送信ボタン）
+    // ========================================
+    if (submitBtn && magneticWrapper) {
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        if (!isTouchDevice) {
+            // マウス移動時のマグネティック効果
+            magneticWrapper.addEventListener('mousemove', (e) => {
+                const rect = magneticWrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                // 磁力の強さ（距離に応じて減衰）
+                const distance = Math.sqrt(x * x + y * y);
+                const maxDistance = 100;
+                const strength = Math.max(0, 1 - distance / maxDistance);
+
+                gsap.to(submitBtn, {
+                    x: x * 0.3 * strength,
+                    y: y * 0.3 * strength,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+
+            magneticWrapper.addEventListener('mouseleave', () => {
+                gsap.to(submitBtn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.5,
+                    ease: 'elastic.out(1, 0.5)'
+                });
+            });
+        }
+
+        // タッチデバイス用：タップ位置への引き寄せ
+        if (isTouchDevice) {
+            magneticWrapper.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                const rect = magneticWrapper.getBoundingClientRect();
+                const x = touch.clientX - rect.left - rect.width / 2;
+                const y = touch.clientY - rect.top - rect.height / 2;
+
+                gsap.to(submitBtn, {
+                    x: x * 0.2,
+                    y: y * 0.2,
+                    duration: 0.2,
+                    ease: 'power2.out'
+                });
+            });
+
+            magneticWrapper.addEventListener('touchend', () => {
+                gsap.to(submitBtn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.4,
+                    ease: 'elastic.out(1, 0.5)'
+                });
+            });
+        }
+    }
+
+    // ========================================
+    // 入力フィールドのグロー効果
+    // ========================================
+    formInputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            gsap.to(input, {
+                scale: 1.01,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+
+        input.addEventListener('blur', () => {
+            gsap.to(input, {
+                scale: 1,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+    });
+
+    // ========================================
+    // フォーム送信（モック）& 反重力演出
+    // ========================================
+    const form = document.getElementById('contact-form');
+    if (form && submitBtn && thankYouMessage) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // ボタンが上へ飛んでいくアニメーション
+            const btnRect = submitBtn.getBoundingClientRect();
+            const flyDistance = btnRect.top + btnRect.height + 100;
+
+            gsap.timeline()
+                .to(submitBtn, {
+                    y: -flyDistance,
+                    rotation: 15,
+                    opacity: 0,
+                    scale: 0.5,
+                    duration: 1,
+                    ease: 'power2.in'
+                })
+                .to(contactForm, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                }, '-=0.5')
+                .add(() => {
+                    contactForm.style.display = 'none';
+                    thankYouMessage.classList.add('visible');
+                })
+                .fromTo(thankYouMessage.querySelector('.thank-you-content'), {
+                    y: 50,
+                    opacity: 0
+                }, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: 'power3.out'
+                });
+        });
+    }
+
+    // ========================================
+    // 終着点のバウンス効果
+    // ========================================
+    let hasBouncedAtEnd = false;
+
+    ScrollTrigger.create({
+        trigger: contactSection,
+        start: 'bottom bottom',
+        onEnter: () => {
+            if (!hasBouncedAtEnd) {
+                hasBouncedAtEnd = true;
+                contactSection.classList.add('bounce');
+                setTimeout(() => {
+                    contactSection.classList.remove('bounce');
+                }, 600);
+            }
+        },
+        onLeaveBack: () => {
+            hasBouncedAtEnd = false;
+        }
+    });
+});
+
+// ========================================
+// パーティクルのパララックス効果
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const particles = document.querySelectorAll('.particle');
+
+    if (particles.length === 0) return;
+
+    particles.forEach((particle, index) => {
+        // 各パーティクルに異なるパララックス速度
+        const speed = (index % 3 + 1) * 20;
+        const direction = index % 2 === 0 ? 1 : -1;
+
+        gsap.to(particle, {
+            y: speed * direction,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.contact-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+    });
+});

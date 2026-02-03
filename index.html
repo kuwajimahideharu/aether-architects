@@ -781,6 +781,365 @@
                 max-width: 280px;
             }
         }
+
+        /* ========================================
+           Contact セクション スタイル
+           ======================================== */
+        .contact-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 星屑パーティクル */
+        .contact-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border: 1px solid rgba(180, 180, 180, 0.3);
+            opacity: 0.4;
+            animation: floatParticle 20s ease-in-out infinite;
+        }
+
+        /* パーティクルの配置とサイズ */
+        .particle-1 { width: 8px; height: 8px; top: 10%; left: 5%; animation-delay: 0s; }
+        .particle-2 { width: 12px; height: 12px; top: 20%; right: 10%; animation-delay: -2s; transform: rotate(45deg); }
+        .particle-3 { width: 6px; height: 6px; top: 35%; left: 15%; animation-delay: -4s; }
+        .particle-4 { width: 10px; height: 10px; top: 45%; right: 20%; animation-delay: -6s; transform: rotate(30deg); }
+        .particle-5 { width: 4px; height: 4px; top: 60%; left: 8%; animation-delay: -8s; }
+        .particle-6 { width: 14px; height: 14px; top: 15%; left: 40%; animation-delay: -10s; transform: rotate(60deg); }
+        .particle-7 { width: 5px; height: 5px; top: 70%; right: 15%; animation-delay: -12s; }
+        .particle-8 { width: 8px; height: 8px; top: 80%; left: 25%; animation-delay: -14s; transform: rotate(15deg); }
+        .particle-9 { width: 6px; height: 20px; top: 25%; right: 35%; animation-delay: -16s; }
+        .particle-10 { width: 20px; height: 4px; top: 55%; left: 35%; animation-delay: -18s; }
+        .particle-11 { width: 10px; height: 10px; top: 85%; right: 30%; animation-delay: -1s; transform: rotate(45deg); }
+        .particle-12 { width: 6px; height: 6px; top: 40%; left: 80%; animation-delay: -3s; }
+        .particle-13 { width: 8px; height: 8px; top: 75%; left: 70%; animation-delay: -5s; transform: rotate(20deg); }
+        .particle-14 { width: 4px; height: 12px; top: 30%; left: 60%; animation-delay: -7s; }
+        .particle-15 { width: 12px; height: 4px; top: 65%; right: 5%; animation-delay: -9s; }
+
+        @keyframes floatParticle {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.4;
+            }
+            25% {
+                transform: translateY(-20px) rotate(5deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-10px) rotate(-3deg);
+                opacity: 0.3;
+            }
+            75% {
+                transform: translateY(-30px) rotate(2deg);
+                opacity: 0.5;
+            }
+        }
+
+        /* ヘッダーアニメーション */
+        .contact-header {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        /* フォームコンテナ */
+        .contact-form-container {
+            position: relative;
+        }
+
+        .contact-form {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* フォームグループ */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+        }
+
+        /* 入力フィールドラッパー */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 0;
+            font-size: 1rem;
+            font-weight: 300;
+            color: #1f2937;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(200, 200, 200, 0.5);
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .form-input::placeholder {
+            color: #d1d5db;
+            font-weight: 300;
+        }
+
+        .form-textarea {
+            resize: none;
+            border: 1px solid rgba(200, 200, 200, 0.5);
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* グロー効果 */
+        .input-glow {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(180, 160, 120, 0.6), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .form-textarea + .input-glow {
+            bottom: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 0;
+            transform: scale(1);
+            opacity: 0;
+            box-shadow: 0 0 0 rgba(180, 160, 120, 0);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* フォーカス時のスタイル */
+        .form-input:focus {
+            border-color: rgba(180, 160, 120, 0.6);
+        }
+
+        .form-input:focus + .input-glow {
+            transform: scaleX(1);
+        }
+
+        .form-textarea:focus {
+            border-color: rgba(180, 160, 120, 0.6);
+            box-shadow: 0 0 30px rgba(180, 160, 120, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .form-textarea:focus + .input-glow {
+            opacity: 1;
+            border-color: rgba(180, 160, 120, 0.3);
+            box-shadow: 0 0 40px rgba(180, 160, 120, 0.1);
+        }
+
+        /* マグネティックラッパー */
+        .magnetic-wrapper {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* 送信ボタン */
+        .submit-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: #1f2937;
+            background: transparent;
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #1f2937;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+        }
+
+        .submit-btn:hover {
+            color: white;
+            border-color: #1f2937;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .btn-icon {
+            transition: transform 0.4s ease;
+        }
+
+        .submit-btn:hover .btn-icon {
+            transform: translateX(5px) translateY(-5px);
+        }
+
+        /* Thank You メッセージ */
+        .thank-you-message {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .thank-you-message.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .thank-you-content {
+            text-align: center;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .thank-you-message.visible .thank-you-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .thank-you-icon {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: #b8860b;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* フッター */
+        .contact-footer {
+            margin-top: auto;
+            border-top: 1px solid rgba(200, 200, 200, 0.3);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #1f2937;
+            transform: translateY(-2px);
+        }
+
+        .footer-copyright {
+            text-align: right;
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: #9ca3af;
+            letter-spacing: 0.05em;
+        }
+
+        /* 終着点のバウンス効果用 */
+        .contact-section.bounce {
+            animation: bounceEnd 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        @keyframes bounceEnd {
+            0%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+            50% { transform: translateY(0); }
+            70% { transform: translateY(-4px); }
+        }
+
+        /* ========================================
+           Contact レスポンシブ
+           ======================================== */
+        @media (max-width: 768px) {
+            .contact-form-container {
+                padding: 0 1rem;
+            }
+
+            .submit-btn {
+                padding: 1rem 2rem;
+                font-size: 0.75rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-copyright {
+                text-align: center;
+            }
+
+            /* パーティクルを減らす */
+            .particle:nth-child(n+10) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .form-input {
+                font-size: 16px; /* iOS ズーム防止 */
+            }
+        }
     </style>
 </head>
 <body>
@@ -1065,15 +1424,140 @@
         </div>
     </section>
 
-    <!-- OUR PHILOSOPHY セクション -->
-    <section class="min-h-screen bg-white flex items-center justify-center">
-        <div class="text-center">
-            <h3 class="text-4xl font-light text-gray-900 mb-4">OUR PHILOSOPHY</h3>
-            <p class="text-lg font-light text-gray-600 max-w-2xl mx-auto px-4">
-                建築は地に根ざしながらも、空へと向かう。<br>
-                私たちは重力という制約を、可能性へと変える。
-            </p>
+    <!-- ===== Contact セクション ===== -->
+    <section class="contact-section relative overflow-hidden" id="contact">
+        <!-- 星屑のような幾何学オブジェクト背景 -->
+        <div class="contact-particles">
+            <div class="particle particle-1"></div>
+            <div class="particle particle-2"></div>
+            <div class="particle particle-3"></div>
+            <div class="particle particle-4"></div>
+            <div class="particle particle-5"></div>
+            <div class="particle particle-6"></div>
+            <div class="particle particle-7"></div>
+            <div class="particle particle-8"></div>
+            <div class="particle particle-9"></div>
+            <div class="particle particle-10"></div>
+            <div class="particle particle-11"></div>
+            <div class="particle particle-12"></div>
+            <div class="particle particle-13"></div>
+            <div class="particle particle-14"></div>
+            <div class="particle particle-15"></div>
         </div>
+
+        <!-- グラデーション背景 -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#f5f5f5] via-[#fafafa] to-[#f0f0f0]"></div>
+
+        <div class="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 py-24">
+            <!-- セクションヘッダー -->
+            <div class="contact-header text-center mb-16">
+                <span class="text-xs tracking-[0.3em] text-gray-400 uppercase mb-4 block">Get in Touch</span>
+                <h2 class="text-4xl md:text-6xl font-extralight text-gray-900 tracking-wide">CONTACT</h2>
+                <div class="w-16 h-px bg-gray-300 mx-auto mt-6"></div>
+            </div>
+
+            <!-- フォームコンテナ -->
+            <div class="contact-form-container w-full max-w-lg" id="contact-form-container">
+                <form class="contact-form" id="contact-form">
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label for="name" class="form-label">NAME</label>
+                        <div class="input-wrapper">
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-input"
+                                placeholder="Your Name"
+                                required
+                            >
+                            <div class="input-glow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">EMAIL</label>
+                        <div class="input-wrapper">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input"
+                                placeholder="your@email.com"
+                                required
+                            >
+                            <div class="input-glow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group">
+                        <label for="message" class="form-label">MESSAGE</label>
+                        <div class="input-wrapper">
+                            <textarea
+                                id="message"
+                                name="message"
+                                class="form-input form-textarea"
+                                placeholder="Tell us about your project..."
+                                rows="5"
+                                required
+                            ></textarea>
+                            <div class="input-glow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group text-center mt-12">
+                        <div class="magnetic-wrapper" id="magnetic-wrapper">
+                            <button type="submit" class="submit-btn" id="submit-btn">
+                                <span class="btn-text">SEND MESSAGE</span>
+                                <span class="btn-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Thank You メッセージ -->
+                <div class="thank-you-message" id="thank-you-message">
+                    <div class="thank-you-content">
+                        <div class="thank-you-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="22,4 12,14.01 9,11.01" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl md:text-4xl font-extralight text-gray-900 mb-4">Thank You</h3>
+                        <p class="text-gray-500 font-light tracking-wide">Your message has defied gravity.</p>
+                        <p class="text-gray-400 text-sm mt-2">We'll be in touch soon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <footer class="contact-footer relative z-10">
+            <div class="max-w-7xl mx-auto px-6 py-8">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="https://hideharublog.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+                            Portfolio
+                            <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="footer-copyright">
+                        <p>&copy; 2024 AETHER ARCHITECTS. All rights reserved.</p>
+                        <p class="text-xs text-gray-400 mt-1">Defying Gravity, Defining Space.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </section>
 
     <script src="index.js"></script>
