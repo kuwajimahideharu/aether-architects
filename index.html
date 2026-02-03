@@ -353,11 +353,277 @@
                 font-size: 0.75rem;
             }
         }
+
+        /* ========================================
+           Works セクション スタイル
+           ======================================== */
+        .works-section {
+            overflow: hidden;
+        }
+
+        .works-header {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        /* 変則グリッドレイアウト */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* カード配置（デスクトップ） */
+        .work-card-1 {
+            grid-column: 1 / 6;
+            margin-top: 0;
+        }
+
+        .work-card-2 {
+            grid-column: 7 / 13;
+            margin-top: 8rem; /* 上下にずらす */
+        }
+
+        .work-card-3 {
+            grid-column: 3 / 9;
+            margin-top: -4rem;
+        }
+
+        /* カード本体 */
+        .work-card {
+            opacity: 0;
+            transform: translateY(100px) scale(0.9);
+            will-change: transform, opacity;
+        }
+
+        .work-card-inner {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+                        box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* 反重力ホバーエフェクト */
+        .work-card-inner:hover {
+            transform: translateY(-15px);
+        }
+
+        .work-card-inner::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 10%;
+            right: 10%;
+            height: 40px;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, transparent 70%);
+            opacity: 0.5;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .work-card-inner:hover::after {
+            bottom: -35px;
+            opacity: 1;
+            filter: blur(15px);
+            transform: scaleX(0.9);
+        }
+
+        /* 画像コンテナ */
+        .work-image-container {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            background-color: #e5e5e5;
+        }
+
+        .work-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .work-card-inner:hover .work-image {
+            transform: scale(1.05);
+        }
+
+        .work-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                transparent 50%,
+                rgba(0, 0, 0, 0.4) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .work-card-inner:hover .work-image-overlay {
+            opacity: 1;
+        }
+
+        /* 作品情報 */
+        .work-info {
+            padding: 1.5rem 0;
+        }
+
+        .work-number {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: rgba(100, 100, 100, 0.6);
+            letter-spacing: 0.2em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #1a1a1a;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .work-card-inner:hover .work-title {
+            color: #4a4a4a;
+        }
+
+        .work-subtitle {
+            font-size: 0.875rem;
+            font-weight: 300;
+            color: rgba(100, 100, 100, 0.8);
+            letter-spacing: 0.1em;
+        }
+
+        /* View All ボタン */
+        .works-view-all {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: #1a1a1a;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background: transparent;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            text-decoration: none;
+        }
+
+        .works-view-all:hover {
+            background: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .works-view-all svg {
+            transition: transform 0.4s ease;
+        }
+
+        .works-view-all:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* ========================================
+           Works レスポンシブ（タブレット & スマホ）
+           ======================================== */
+        @media (max-width: 1024px) {
+            .works-grid {
+                gap: 1.5rem;
+            }
+
+            .work-card-1 {
+                grid-column: 1 / 7;
+                margin-top: 0;
+            }
+
+            .work-card-2 {
+                grid-column: 6 / 13;
+                margin-top: 4rem;
+            }
+
+            .work-card-3 {
+                grid-column: 2 / 10;
+                margin-top: -2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .works-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .work-card-1,
+            .work-card-2,
+            .work-card-3 {
+                margin-top: 0;
+                width: 100%;
+            }
+
+            /* スマホでは交互にずらす */
+            .work-card-1 {
+                padding-right: 1.5rem;
+            }
+
+            .work-card-2 {
+                padding-left: 1.5rem;
+            }
+
+            .work-card-3 {
+                padding-right: 1.5rem;
+            }
+
+            .work-title {
+                font-size: 1.25rem;
+            }
+
+            .work-image-container {
+                aspect-ratio: 16 / 10;
+            }
+
+            /* スマホタップ時のアクティブ状態 */
+            .work-card-inner:active,
+            .work-card-inner.touch-active {
+                transform: translateY(-10px);
+            }
+
+            .work-card-inner:active::after,
+            .work-card-inner.touch-active::after {
+                bottom: -25px;
+                opacity: 0.8;
+            }
+
+            .work-card-inner.touch-active .work-image {
+                transform: scale(1.05);
+            }
+
+            .work-card-inner.touch-active .work-image-overlay {
+                opacity: 1;
+            }
+        }
+
+        /* スムーズスクロールのための設定（iOS対応） */
+        @supports (-webkit-touch-callout: none) {
+            .works-section {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- グラスモーフィズム ナビゲーション -->
     <nav class="glass-nav">
+        <a href="#works" class="glass-nav-link">WORKS</a>
+        <span style="color: rgba(0, 0, 0, 0.2); margin: 0 0.5rem;">|</span>
         <a href="#menu" class="glass-nav-link">MENU</a>
         <span style="color: rgba(0, 0, 0, 0.2); margin: 0 0.5rem;">|</span>
         <a href="#contact" class="glass-nav-link">CONTACT</a>
@@ -420,7 +686,95 @@
         </div>
     </section>
 
-    <!-- 追加コンテンツ用のスペース（スクロール効果確認用） -->
+    <!-- ===== Works セクション ===== -->
+    <section class="works-section py-24 md:py-32 relative" id="works">
+        <!-- 背景のグラデーション -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#f5f5f5] via-white to-[#f5f5f5] pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+            <!-- セクションヘッダー -->
+            <div class="works-header mb-16 md:mb-24">
+                <span class="text-xs tracking-[0.3em] text-gray-400 uppercase mb-4 block">Selected Projects</span>
+                <h2 class="text-4xl md:text-6xl font-extralight text-gray-900 tracking-wide">WORKS</h2>
+                <div class="w-16 h-px bg-gray-300 mt-6"></div>
+            </div>
+
+            <!-- 変則グリッドレイアウト -->
+            <div class="works-grid">
+                <!-- Project 01: Cloud Pavilion -->
+                <div class="work-card work-card-1" data-index="0">
+                    <div class="work-card-inner">
+                        <div class="work-image-container">
+                            <img
+                                src="https://images.unsplash.com/photo-1545558014-8692077e9b5c?auto=format&fit=crop&q=80&w=1200"
+                                alt="Cloud Pavilion"
+                                class="work-image"
+                                loading="lazy"
+                            >
+                            <div class="work-image-overlay"></div>
+                        </div>
+                        <div class="work-info">
+                            <span class="work-number">01</span>
+                            <h3 class="work-title">Cloud Pavilion</h3>
+                            <p class="work-subtitle">Minimal Glass Structure</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 02: Aether House -->
+                <div class="work-card work-card-2" data-index="1">
+                    <div class="work-card-inner">
+                        <div class="work-image-container">
+                            <img
+                                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200"
+                                alt="Aether House"
+                                class="work-image"
+                                loading="lazy"
+                            >
+                            <div class="work-image-overlay"></div>
+                        </div>
+                        <div class="work-info">
+                            <span class="work-number">02</span>
+                            <h3 class="work-title">Aether House</h3>
+                            <p class="work-subtitle">Concrete & Shadow</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 03: Horizon Gallery -->
+                <div class="work-card work-card-3" data-index="2">
+                    <div class="work-card-inner">
+                        <div class="work-image-container">
+                            <img
+                                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1200"
+                                alt="Horizon Gallery"
+                                class="work-image"
+                                loading="lazy"
+                            >
+                            <div class="work-image-overlay"></div>
+                        </div>
+                        <div class="work-info">
+                            <span class="work-number">03</span>
+                            <h3 class="work-title">Horizon Gallery</h3>
+                            <p class="work-subtitle">Floating Terrace</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All ボタン -->
+            <div class="text-center mt-16 md:mt-24">
+                <a href="#" class="works-view-all">
+                    <span>VIEW ALL PROJECTS</span>
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR PHILOSOPHY セクション -->
     <section class="min-h-screen bg-white flex items-center justify-center">
         <div class="text-center">
             <h3 class="text-4xl font-light text-gray-900 mb-4">OUR PHILOSOPHY</h3>

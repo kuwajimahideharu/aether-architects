@@ -217,6 +217,137 @@ document.querySelectorAll('.fade-in').forEach(element => {
 });
 
 // ========================================
+// Works セクション アンチグラビティ演出
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const worksHeader = document.querySelector('.works-header');
+    const workCards = document.querySelectorAll('.work-card');
+
+    if (!worksHeader || workCards.length === 0) return;
+
+    // セクションヘッダーのアニメーション
+    gsap.to(worksHeader, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+            trigger: worksHeader,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+        }
+    });
+
+    // 各カードの「奥から手前へ浮き上がる」アニメーション
+    workCards.forEach((card, index) => {
+        // カードごとに異なる遅延を設定
+        const delay = index * 0.15;
+
+        gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.2,
+            delay: delay,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: card,
+                start: 'top 90%',
+                end: 'top 50%',
+                toggleActions: 'play none none reverse',
+                // スクラブではなくトリガーベースで実行
+            }
+        });
+    });
+
+    // 反重力ホバーエフェクト（タッチデバイス対応）
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    workCards.forEach(card => {
+        const inner = card.querySelector('.work-card-inner');
+        if (!inner) return;
+
+        if (isTouchDevice) {
+            // タッチデバイス：タップでホバー状態をトグル
+            let isActive = false;
+
+            inner.addEventListener('touchstart', (e) => {
+                // 他のカードのアクティブ状態を解除
+                workCards.forEach(otherCard => {
+                    if (otherCard !== card) {
+                        const otherInner = otherCard.querySelector('.work-card-inner');
+                        if (otherInner) {
+                            otherInner.classList.remove('touch-active');
+                        }
+                    }
+                });
+
+                isActive = !isActive;
+                inner.classList.toggle('touch-active', isActive);
+            });
+        }
+
+        // マウス移動による微細な3Dチルト効果（デスクトップのみ）
+        if (!isTouchDevice) {
+            inner.addEventListener('mousemove', (e) => {
+                const rect = inner.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // 傾きを計算（-5度〜+5度の範囲）
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                gsap.to(inner, {
+                    rotationX: rotateX,
+                    rotationY: rotateY,
+                    transformPerspective: 1000,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+
+            inner.addEventListener('mouseleave', () => {
+                gsap.to(inner, {
+                    rotationX: 0,
+                    rotationY: 0,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            });
+        }
+    });
+});
+
+// ========================================
+// Works セクション パララックススクロール
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const workCards = document.querySelectorAll('.work-card');
+
+    if (workCards.length === 0) return;
+
+    // 各カードに異なる速度のパララックスを適用
+    workCards.forEach((card, index) => {
+        // 奇数・偶数で異なるパララックス速度
+        const speed = index % 2 === 0 ? 30 : -30;
+
+        gsap.to(card, {
+            y: speed,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.works-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1,
+            }
+        });
+    });
+});
+
+// ========================================
 // 背景画像のパララックス効果
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
