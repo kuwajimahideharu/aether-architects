@@ -216,9 +216,156 @@
                 transform: translateY(-10px);
             }
         }
+
+        /* グラスモーフィズム ナビゲーション */
+        .glass-nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: floatNav 4s ease-in-out infinite;
+        }
+
+        @keyframes floatNav {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        .glass-nav-link {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            color: rgba(0, 0, 0, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .glass-nav-link:hover {
+            color: rgba(0, 0, 0, 1);
+            transform: translateY(-2px);
+        }
+
+        .glass-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .glass-nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* スクロールダウンインジケーター */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            animation: floatScroll 3s ease-in-out infinite;
+        }
+
+        @keyframes floatScroll {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-15px);
+            }
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(
+                to bottom,
+                rgba(100, 100, 100, 0),
+                rgba(100, 100, 100, 0.6),
+                rgba(100, 100, 100, 0)
+            );
+        }
+
+        .scroll-text {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: rgba(100, 100, 100, 0.8);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* シネマティックフィルター用オーバーレイ */
+        .cinematic-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0);
+            mix-blend-mode: multiply;
+            transition: all 1s ease-out;
+        }
+
+        .cinematic-overlay.active {
+            background: linear-gradient(
+                135deg,
+                rgba(139, 115, 85, 0.15) 0%,
+                rgba(70, 60, 50, 0.1) 100%
+            );
+        }
+
+        /* レスポンシブ：スマホでナビゲーションを小さく */
+        @media (max-width: 640px) {
+            .glass-nav {
+                padding: 0.5rem 1rem;
+            }
+
+            .glass-nav-link {
+                padding: 0.4rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- グラスモーフィズム ナビゲーション -->
+    <nav class="glass-nav">
+        <a href="#menu" class="glass-nav-link">MENU</a>
+        <span style="color: rgba(0, 0, 0, 0.2); margin: 0 0.5rem;">|</span>
+        <a href="#contact" class="glass-nav-link">CONTACT</a>
+    </nav>
+
+    <!-- シネマティックフィルター用オーバーレイ -->
+    <div class="cinematic-overlay" id="cinematic-overlay"></div>
+
     <!-- ヒーローセクション -->
     <section class="hero-section flex items-center justify-center relative">
         <!-- 背景画像レイヤー -->
@@ -265,6 +412,12 @@
 
         <!-- グラデーションオーバーレイ（下部） -->
         <div class="gradient-overlay absolute bottom-0 left-0 right-0 h-32"></div>
+
+        <!-- スクロールダウンインジケーター -->
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span class="scroll-text">SCROLL DOWN</span>
+        </div>
     </section>
 
     <!-- 追加コンテンツ用のスペース（スクロール効果確認用） -->

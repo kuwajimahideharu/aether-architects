@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             floatingAnimations.push(floatAnim);
         });
 
-        // 背景画像要素の取得
+        // 背景画像要素とシネマティックオーバーレイの取得
         const heroBg = document.getElementById('hero-bg');
+        const cinematicOverlay = document.getElementById('cinematic-overlay');
 
         // ScrollTriggerを使ったタイムラインアニメーション
         const tl = gsap.timeline({
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     floatingAnimations.forEach(anim => anim.kill());
                 },
                 onUpdate: (self) => {
-                    // スクロール進行度に応じて光の演出と背景のblurを制御
+                    // スクロール進行度に応じて光の演出、背景のblur、シネマティックフィルターを制御
                     const progress = self.progress;
 
                     // 60%以上スクロールしたら光を追加、それ以下なら削除
@@ -63,10 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         chars.forEach(char => char.classList.add('assembled'));
                         // 背景画像のblurを解除
                         if (heroBg) heroBg.classList.add('focused');
+                        // シネマティックフィルターを適用
+                        if (cinematicOverlay) {
+                            cinematicOverlay.classList.add('active');
+                            // 追加のフィルター効果（コントラストとセピア）
+                            cinematicOverlay.style.filter = 'contrast(1.1) sepia(0.15)';
+                        }
                     } else {
                         chars.forEach(char => char.classList.remove('assembled'));
                         // 背景画像のblurを復活
                         if (heroBg) heroBg.classList.remove('focused');
+                        // シネマティックフィルターを解除
+                        if (cinematicOverlay) {
+                            cinematicOverlay.classList.remove('active');
+                            cinematicOverlay.style.filter = 'none';
+                        }
                     }
                 }
             }
