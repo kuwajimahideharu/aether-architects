@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             floatingAnimations.push(floatAnim);
         });
 
+        // 背景画像要素の取得
+        const heroBg = document.getElementById('hero-bg');
+
         // ScrollTriggerを使ったタイムラインアニメーション
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -52,14 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     floatingAnimations.forEach(anim => anim.kill());
                 },
                 onUpdate: (self) => {
-                    // スクロール進行度に応じて光の演出を制御
+                    // スクロール進行度に応じて光の演出と背景のblurを制御
                     const progress = self.progress;
 
                     // 60%以上スクロールしたら光を追加、それ以下なら削除
                     if (progress > 0.6) {
                         chars.forEach(char => char.classList.add('assembled'));
+                        // 背景画像のblurを解除
+                        if (heroBg) heroBg.classList.add('focused');
                     } else {
                         chars.forEach(char => char.classList.remove('assembled'));
+                        // 背景画像のblurを復活
+                        if (heroBg) heroBg.classList.remove('focused');
                     }
                 }
             }
@@ -195,4 +202,109 @@ const observer = new IntersectionObserver((entries) => {
 // .fade-in クラスを持つ要素を監視
 document.querySelectorAll('.fade-in').forEach(element => {
     observer.observe(element);
+});
+
+// ========================================
+// 背景画像のパララックス効果
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const heroBg = document.getElementById('hero-bg');
+
+    if (!heroBg) return;
+
+    // スクロールによるパララックス（背景が文字よりもゆっくり動く）
+    gsap.to(heroBg, {
+        y: '20%',
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+        }
+    });
+});
+
+// ========================================
+// ジャイロセンサー & マウス移動による3D Tilt効果
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const heroBg = document.getElementById('hero-bg');
+
+    if (!heroBg) return;
+
+    let currentX = 0;
+    let currentY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    // スムーズな動きのための補間
+    const lerp = (start, end, factor) => {
+        return start + (end - start) * factor;
+    };
+
+    // アニメーションループ
+    const animate = () => {
+        currentX = lerp(currentX, targetX, 0.1);
+        currentY = lerp(currentY, targetY, 0.1);
+
+        // 背景画像を微妙に傾ける（-5度〜+5度の範囲）
+        gsap.to(heroBg, {
+            rotationY: currentX * 5,
+            rotationX: -currentY * 5,
+            duration: 0.5,
+            ease: 'power2.out',
+            transformPerspective: 1000,
+            transformOrigin: 'center center',
+        });
+
+        requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // マウス移動による傾き（デスクトップ）
+    document.addEventListener('mousemove', (e) => {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // マウス位置を-1〜1の範囲に正規化
+        targetX = (e.clientX / windowWidth) * 2 - 1;
+        targetY = (e.clientY / windowHeight) * 2 - 1;
+    });
+
+    // ジャイロセンサーによる傾き（iPhone/スマホ）
+    if (window.DeviceOrientationEvent) {
+        // iOS13以降は許可が必要
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            // ユーザーが画面をタップしたら許可をリクエスト
+            const requestPermission = () => {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                        }
+                    })
+                    .catch(console.error);
+            };
+
+            // 最初のタッチで許可をリクエスト
+            document.addEventListener('touchstart', requestPermission, { once: true });
+        } else {
+            // Android や古いiOSは直接リスナーを追加
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+    }
+
+    // ジャイロセンサーのデータを処理
+    function handleOrientation(event) {
+        // beta: 前後の傾き（-180〜180）
+        // gamma: 左右の傾き（-90〜90）
+        const beta = event.beta;
+        const gamma = event.gamma;
+
+        // 傾きを-1〜1の範囲に正規化（控えめに）
+        targetX = Math.max(-1, Math.min(1, gamma / 45));
+        targetY = Math.max(-1, Math.min(1, (beta - 45) / 45));
+    }
 });
