@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER ARCHITECTS | 重力からの解放</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* 浮遊する建築断片のアニメーション */
+        @keyframes float1 {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(10px, -15px) rotate(2deg);
+            }
+            50% {
+                transform: translate(-5px, -25px) rotate(-1deg);
+            }
+            75% {
+                transform: translate(15px, -10px) rotate(1deg);
+            }
+        }
+
+        @keyframes float2 {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(-20px, 10px) rotate(-2deg);
+            }
+            66% {
+                transform: translate(10px, 20px) rotate(1deg);
+            }
+        }
+
+        @keyframes float3 {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            50% {
+                transform: translate(8px, -30px) rotate(3deg);
+            }
+        }
+
+        @keyframes float4 {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            40% {
+                transform: translate(-15px, -20px);
+            }
+            80% {
+                transform: translate(20px, -10px);
+            }
+        }
+
+        .floating-element-1 {
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .floating-element-2 {
+            animation: float2 10s ease-in-out infinite;
+        }
+
+        .floating-element-3 {
+            animation: float3 7s ease-in-out infinite;
+        }
+
+        .floating-element-4 {
+            animation: float4 9s ease-in-out infinite;
+        }
+
+        /* ヒーローセクションの高さ */
+        .hero-section {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* パララックス要素 */
+        .parallax-text {
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        /* 建築断片のスタイル */
+        .arch-fragment {
+            position: absolute;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* グラデーションオーバーレイ */
+        .gradient-overlay {
+            background: linear-gradient(180deg, transparent 0%, rgba(245, 245, 245, 0.8) 100%);
+        }
+
+        /* デジタル・タイポグラフィ用スタイル */
+        .typo-container {
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .char {
+            display: inline-block;
+            position: relative;
+            will-change: transform, opacity;
+            opacity: 0;
+        }
+
+        /* 浮遊アニメーション（ランダム配置時） */
+        @keyframes floatChar {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヒーローセクション -->
+    <section class="hero-section flex items-center justify-center relative">
+        <!-- 浮遊する建築断片 -->
+        <div class="arch-fragment floating-element-1 top-20 left-[10%] w-32 h-32 border-2 border-gray-400"></div>
+        <div class="arch-fragment floating-element-2 top-[15%] right-[15%] w-24 h-40 border-2 border-gray-400"></div>
+        <div class="arch-fragment floating-element-3 bottom-[20%] left-[20%] w-40 h-24 border-2 border-gray-400"></div>
+        <div class="arch-fragment floating-element-4 top-[40%] right-[10%] w-2 h-48 bg-gray-400"></div>
+        <div class="arch-fragment floating-element-1 bottom-[15%] right-[25%] w-28 h-28 border-2 border-gray-400 rotate-45"></div>
+
+        <!-- パララックス背景テキスト -->
+        <div class="parallax-text absolute top-[30%] left-[5%] text-9xl font-light text-gray-300 opacity-30 select-none" id="parallax-bg">
+            GRAVITY
+        </div>
+
+        <!-- メインコンテンツ -->
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-7xl md:text-8xl font-light tracking-wider text-gray-900 mb-6">
+                AETHER
+            </h1>
+            <h2 class="text-6xl md:text-7xl font-extralight tracking-widest text-gray-800 mb-8">
+                ARCHITECTS
+            </h2>
+            <div class="w-24 h-px bg-gray-400 mx-auto mb-12"></div>
+
+            <!-- デジタル・タイポグラフィ キャッチコピー -->
+            <div class="typo-container mb-8">
+                <p id="main-copy" class="text-3xl md:text-5xl font-light text-gray-800 tracking-wide">
+                    <span class="char">重</span><span class="char">力</span><span class="char">を</span><span class="char">、</span><span class="char">再</span><span class="char">定</span><span class="char">義</span><span class="char">す</span><span class="char">る</span><span class="char">。</span>
+                </p>
+            </div>
+
+            <p class="text-sm md:text-base font-light text-gray-500 tracking-widest">
+                REDEFINING GRAVITY
+            </p>
+        </div>
+
+        <!-- グラデーションオーバーレイ（下部） -->
+        <div class="gradient-overlay absolute bottom-0 left-0 right-0 h-32"></div>
+    </section>
+
+    <!-- 追加コンテンツ用のスペース（スクロール効果確認用） -->
+    <section class="min-h-screen bg-white flex items-center justify-center">
+        <div class="text-center">
+            <h3 class="text-4xl font-light text-gray-900 mb-4">OUR PHILOSOPHY</h3>
+            <p class="text-lg font-light text-gray-600 max-w-2xl mx-auto px-4">
+                建築は地に根ざしながらも、空へと向かう。<br>
+                私たちは重力という制約を、可能性へと変える。
+            </p>
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+</body>
+</html>
