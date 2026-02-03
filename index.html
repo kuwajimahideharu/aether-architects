@@ -128,8 +128,34 @@
         .char {
             display: inline-block;
             position: relative;
-            will-change: transform, opacity;
+            will-change: transform, opacity, text-shadow;
             opacity: 0;
+            text-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            transition: text-shadow 0.6s ease-out;
+        }
+
+        /* 文字が集まった時の光の演出 */
+        .char.assembled {
+            text-shadow:
+                0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 40px rgba(200, 200, 200, 0.4),
+                0 0 60px rgba(150, 150, 150, 0.2);
+        }
+
+        /* レスポンシブタイポグラフィ - iPhone対応 */
+        .main-title {
+            font-size: clamp(3rem, 12vw, 7rem);
+            letter-spacing: clamp(0.1em, 0.5vw, 0.3em);
+        }
+
+        .sub-title {
+            font-size: clamp(2.5rem, 10vw, 6rem);
+            letter-spacing: clamp(0.15em, 0.6vw, 0.4em);
+        }
+
+        .main-copy-text {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            letter-spacing: clamp(0.05em, 0.3vw, 0.15em);
         }
 
         /* 浮遊アニメーション（ランダム配置時） */
@@ -147,11 +173,11 @@
     <!-- ヒーローセクション -->
     <section class="hero-section flex items-center justify-center relative">
         <!-- 浮遊する建築断片 -->
-        <div class="arch-fragment floating-element-1 top-20 left-[10%] w-32 h-32 border-2 border-gray-400"></div>
-        <div class="arch-fragment floating-element-2 top-[15%] right-[15%] w-24 h-40 border-2 border-gray-400"></div>
-        <div class="arch-fragment floating-element-3 bottom-[20%] left-[20%] w-40 h-24 border-2 border-gray-400"></div>
-        <div class="arch-fragment floating-element-4 top-[40%] right-[10%] w-2 h-48 bg-gray-400"></div>
-        <div class="arch-fragment floating-element-1 bottom-[15%] right-[25%] w-28 h-28 border-2 border-gray-400 rotate-45"></div>
+        <div class="arch-fragment arch-obj floating-element-1 top-20 left-[10%] w-32 h-32 border-2 border-gray-400"></div>
+        <div class="arch-fragment arch-obj floating-element-2 top-[15%] right-[15%] w-24 h-40 border-2 border-gray-400"></div>
+        <div class="arch-fragment arch-obj floating-element-3 bottom-[20%] left-[20%] w-40 h-24 border-2 border-gray-400"></div>
+        <div class="arch-fragment arch-obj floating-element-4 top-[40%] right-[10%] w-2 h-48 bg-gray-400"></div>
+        <div class="arch-fragment arch-obj floating-element-1 bottom-[15%] right-[25%] w-28 h-28 border-2 border-gray-400 rotate-45"></div>
 
         <!-- パララックス背景テキスト -->
         <div class="parallax-text absolute top-[30%] left-[5%] text-9xl font-light text-gray-300 opacity-30 select-none" id="parallax-bg">
@@ -159,18 +185,18 @@
         </div>
 
         <!-- メインコンテンツ -->
-        <div class="relative z-10 text-center px-4">
-            <h1 class="text-7xl md:text-8xl font-light tracking-wider text-gray-900 mb-6">
+        <div class="relative z-10 text-center px-4 max-w-full">
+            <h1 class="main-title font-light text-gray-900 mb-6">
                 AETHER
             </h1>
-            <h2 class="text-6xl md:text-7xl font-extralight tracking-widest text-gray-800 mb-8">
+            <h2 class="sub-title font-extralight text-gray-800 mb-8">
                 ARCHITECTS
             </h2>
             <div class="w-24 h-px bg-gray-400 mx-auto mb-12"></div>
 
             <!-- デジタル・タイポグラフィ キャッチコピー -->
             <div class="typo-container mb-8">
-                <p id="main-copy" class="text-3xl md:text-5xl font-light text-gray-800 tracking-wide">
+                <p id="main-copy" class="main-copy-text font-light text-gray-800">
                     <span class="char">重</span><span class="char">力</span><span class="char">を</span><span class="char">、</span><span class="char">再</span><span class="char">定</span><span class="char">義</span><span class="char">す</span><span class="char">る</span><span class="char">。</span>
                 </p>
             </div>

@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
     const chars = document.querySelectorAll('.char');
+    const archObjects = document.querySelectorAll('.arch-obj');
 
     if (chars.length > 0) {
         // 初期状態の配置データを保存
@@ -49,6 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 onEnter: () => {
                     // スクロール開始時に浮遊アニメーションを停止
                     floatingAnimations.forEach(anim => anim.kill());
+                },
+                onUpdate: (self) => {
+                    // スクロール進行度に応じて光の演出を制御
+                    const progress = self.progress;
+
+                    // 60%以上スクロールしたら光を追加、それ以下なら削除
+                    if (progress > 0.6) {
+                        chars.forEach(char => char.classList.add('assembled'));
+                    } else {
+                        chars.forEach(char => char.classList.remove('assembled'));
+                    }
                 }
             }
         });
@@ -64,6 +76,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 ease: 'back.out(1.7)', // Back.easeOut で高級感のあるバウンド
             }, index * 0.03); // 文字ごとに少しずつ遅延（タイムライン上の位置をずらす）
         });
+
+        // 反重力オブジェクトの退場アニメーション
+        if (archObjects.length > 0) {
+            const objectsTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-section',
+                    start: 'top top',
+                    end: 'bottom center',
+                    scrub: 1,
+                }
+            });
+
+            archObjects.forEach((obj, index) => {
+                // 各オブジェクトの位置に応じて退場方向を決定
+                const rect = obj.getBoundingClientRect();
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                // オブジェクトが画面中央より左にあるか右にあるか
+                const isLeft = rect.left < centerX;
+                const isTop = rect.top < centerY;
+
+                // 退場方向を計算（画面の外側へ）
+                const exitX = isLeft ? -window.innerWidth * 0.5 : window.innerWidth * 0.5;
+                const exitY = isTop ? -window.innerHeight * 0.3 : window.innerHeight * 0.3;
+
+                objectsTl.to(obj, {
+                    x: exitX,
+                    y: exitY,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'power2.in',
+                }, index * 0.05);
+            });
+        }
     }
 });
 
