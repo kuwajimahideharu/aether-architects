@@ -348,6 +348,111 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ========================================
+// About セクション 建築図面描画アニメーション
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const aboutSection = document.querySelector('.about-section');
+    const drawLines = document.querySelectorAll('.draw-line');
+    const aboutLines = document.querySelectorAll('.about-line');
+    const dimensionTexts = document.querySelectorAll('.dimension-text');
+    const blueprintLabel = document.querySelector('.blueprint-label');
+
+    if (!aboutSection || drawLines.length === 0) return;
+
+    // 各SVGパスの長さを計算してstroke-dasharrayを設定
+    drawLines.forEach(line => {
+        let length;
+        if (line.tagName === 'path') {
+            length = line.getTotalLength();
+        } else if (line.tagName === 'rect') {
+            const width = parseFloat(line.getAttribute('width')) || 0;
+            const height = parseFloat(line.getAttribute('height')) || 0;
+            length = (width + height) * 2;
+        } else if (line.tagName === 'circle') {
+            const r = parseFloat(line.getAttribute('r')) || 0;
+            length = 2 * Math.PI * r;
+        } else {
+            length = 1000;
+        }
+        line.style.strokeDasharray = length;
+        line.style.strokeDashoffset = length;
+    });
+
+    // SVG描画アニメーション（スクロール同期）
+    const drawTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: aboutSection,
+            start: 'top 60%',
+            end: 'bottom 40%',
+            scrub: 1.5, // スムーズなスクラブ
+        }
+    });
+
+    // 線を順番に描画（各線に微妙な遅延）
+    drawLines.forEach((line, index) => {
+        let length;
+        if (line.tagName === 'path') {
+            length = line.getTotalLength();
+        } else if (line.tagName === 'rect') {
+            const width = parseFloat(line.getAttribute('width')) || 0;
+            const height = parseFloat(line.getAttribute('height')) || 0;
+            length = (width + height) * 2;
+        } else if (line.tagName === 'circle') {
+            const r = parseFloat(line.getAttribute('r')) || 0;
+            length = 2 * Math.PI * r;
+        } else {
+            length = 1000;
+        }
+
+        // 各線の描画アニメーション
+        drawTimeline.to(line, {
+            strokeDashoffset: 0,
+            duration: 1,
+            ease: 'none',
+        }, index * 0.03); // 線ごとに少しずつ遅延
+    });
+
+    // 寸法テキストの表示（描画が60%完了した時点）
+    ScrollTrigger.create({
+        trigger: aboutSection,
+        start: 'top 30%',
+        onEnter: () => {
+            dimensionTexts.forEach((text, i) => {
+                setTimeout(() => {
+                    text.classList.add('visible');
+                }, i * 100);
+            });
+            if (blueprintLabel) {
+                setTimeout(() => {
+                    blueprintLabel.classList.add('visible');
+                }, 500);
+            }
+        },
+        onLeaveBack: () => {
+            dimensionTexts.forEach(text => text.classList.remove('visible'));
+            if (blueprintLabel) blueprintLabel.classList.remove('visible');
+        }
+    });
+
+    // テキストの「浮上」演出（一行ずつ）
+    aboutLines.forEach((line, index) => {
+        gsap.to(line, {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: line,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+            },
+            delay: index * 0.1, // 行ごとに遅延
+        });
+    });
+});
+
+// ========================================
 // 背景画像のパララックス効果
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {

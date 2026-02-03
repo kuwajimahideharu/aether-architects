@@ -617,6 +617,170 @@
                 -webkit-overflow-scrolling: touch;
             }
         }
+
+        /* ========================================
+           About セクション スタイル
+           ======================================== */
+        .about-section {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 50%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+        }
+
+        /* 方眼紙パターン背景 */
+        .about-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(200, 200, 200, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 200, 200, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.8;
+        }
+
+        /* 方眼紙の太い線（10マスごと） */
+        .about-grid-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(180, 180, 180, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 180, 180, 0.2) 1px, transparent 1px);
+            background-size: 200px 200px;
+        }
+
+        /* 2カラムレイアウト */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* 左側テキスト */
+        .about-text {
+            position: relative;
+        }
+
+        .about-line {
+            opacity: 0;
+            transform: translateY(40px);
+            filter: blur(8px);
+            will-change: transform, opacity, filter;
+        }
+
+        /* 右側図面エリア */
+        .about-drawing {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* SVG図面スタイル */
+        .blueprint-svg {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            --line-color: #9ca3af;
+            --accent-color: #b8860b;
+        }
+
+        .draw-line {
+            stroke: var(--line-color);
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            will-change: stroke-dashoffset;
+        }
+
+        /* アクセントライン（ゴールド） */
+        .draw-line-accent-1,
+        .draw-line-accent-2 {
+            stroke: var(--accent-color);
+        }
+
+        /* 寸法テキスト */
+        .dimension-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 300;
+            fill: #9ca3af;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .dimension-text.visible {
+            opacity: 1;
+        }
+
+        /* 図面ラベル */
+        .blueprint-label {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(200, 200, 200, 0.3);
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .blueprint-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========================================
+           About レスポンシブ
+           ======================================== */
+        @media (max-width: 1024px) {
+            .about-container {
+                gap: 3rem;
+            }
+
+            .blueprint-svg {
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                min-height: auto;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-text {
+                order: 1;
+            }
+
+            .about-drawing {
+                order: 2;
+            }
+
+            .blueprint-svg {
+                max-width: 320px;
+            }
+
+            .about-grid-bg {
+                background-size: 30px 30px;
+            }
+
+            .about-grid-bg::after {
+                background-size: 150px 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blueprint-svg {
+                max-width: 280px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -624,7 +788,7 @@
     <nav class="glass-nav">
         <a href="#works" class="glass-nav-link">WORKS</a>
         <span style="color: rgba(0, 0, 0, 0.2); margin: 0 0.5rem;">|</span>
-        <a href="#menu" class="glass-nav-link">MENU</a>
+        <a href="#about" class="glass-nav-link">ABOUT</a>
         <span style="color: rgba(0, 0, 0, 0.2); margin: 0 0.5rem;">|</span>
         <a href="#contact" class="glass-nav-link">CONTACT</a>
     </nav>
@@ -770,6 +934,133 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== About セクション ===== -->
+    <section class="about-section relative overflow-hidden" id="about">
+        <!-- 方眼紙パターン背景 -->
+        <div class="about-grid-bg"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-24 md:py-32">
+            <div class="about-container">
+                <!-- 左側: コンセプトテキスト -->
+                <div class="about-text">
+                    <div class="about-header">
+                        <span class="text-xs tracking-[0.3em] text-gray-400 uppercase mb-4 block about-line">Our Philosophy</span>
+                        <h2 class="text-4xl md:text-6xl font-extralight text-gray-900 tracking-wide about-line">CONCEPT</h2>
+                        <div class="w-16 h-px bg-gray-300 mt-6 mb-12 about-line"></div>
+                    </div>
+
+                    <div class="about-description">
+                        <p class="about-line text-lg md:text-xl font-light text-gray-700 leading-relaxed mb-6">
+                            私たちは、重力を再定義する。
+                        </p>
+                        <p class="about-line text-base md:text-lg font-light text-gray-600 leading-relaxed mb-6">
+                            建築とは、地に根ざしながらも空へと向かう意志の結晶。
+                        </p>
+                        <p class="about-line text-base md:text-lg font-light text-gray-600 leading-relaxed mb-6">
+                            私たちは制約を可能性へと変換し、<br class="hidden md:block">
+                            空間に浮遊感と静謐さを与えます。
+                        </p>
+                        <p class="about-line text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">
+                            一本の線から始まる設計思想が、<br class="hidden md:block">
+                            やがて人々の暮らしを包む空間となる。
+                        </p>
+                        <p class="about-line text-sm font-light text-gray-500 tracking-widest uppercase">
+                            — Defying Gravity, Defining Space
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 右側: 建築図面SVG -->
+                <div class="about-drawing">
+                    <svg class="blueprint-svg" viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 建築パース図面 -->
+                        <!-- メインの建物アウトライン -->
+                        <path class="draw-line draw-line-1" d="M100 450 L100 200 L250 100 L400 200 L400 450" stroke-width="1"/>
+
+                        <!-- 屋根のライン -->
+                        <path class="draw-line draw-line-2" d="M80 200 L250 80 L420 200" stroke-width="1"/>
+                        <path class="draw-line draw-line-3" d="M250 80 L250 100" stroke-width="0.5"/>
+
+                        <!-- 床のライン -->
+                        <path class="draw-line draw-line-4" d="M100 450 L400 450" stroke-width="1"/>
+                        <path class="draw-line draw-line-5" d="M80 470 L420 470" stroke-width="0.5"/>
+
+                        <!-- 柱 -->
+                        <path class="draw-line draw-line-6" d="M150 450 L150 220" stroke-width="0.75"/>
+                        <path class="draw-line draw-line-7" d="M250 450 L250 150" stroke-width="0.75"/>
+                        <path class="draw-line draw-line-8" d="M350 450 L350 220" stroke-width="0.75"/>
+
+                        <!-- フロアライン -->
+                        <path class="draw-line draw-line-9" d="M100 350 L400 350" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-10" d="M100 280 L400 280" stroke-width="0.5"/>
+
+                        <!-- ガラス窓（左） -->
+                        <rect class="draw-line draw-line-11" x="115" y="290" width="50" height="80" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-12" d="M115 330 L165 330 M140 290 L140 370" stroke-width="0.3"/>
+
+                        <!-- ガラス窓（中央大） -->
+                        <rect class="draw-line draw-line-13" x="200" y="180" width="100" height="150" stroke-width="0.75"/>
+                        <path class="draw-line draw-line-14" d="M200 230 L300 230 M200 280 L300 280 M250 180 L250 330" stroke-width="0.3"/>
+
+                        <!-- ガラス窓（右） -->
+                        <rect class="draw-line draw-line-15" x="335" y="290" width="50" height="80" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-16" d="M335 330 L385 330 M360 290 L360 370" stroke-width="0.3"/>
+
+                        <!-- エントランス -->
+                        <rect class="draw-line draw-line-17" x="220" y="380" width="60" height="70" stroke-width="0.75"/>
+                        <path class="draw-line draw-line-18" d="M250 380 L250 450" stroke-width="0.3"/>
+
+                        <!-- 浮遊プラットフォーム（左） -->
+                        <path class="draw-line draw-line-19" d="M50 320 L100 320 L100 340 L50 340" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-20" d="M50 340 L30 360 M100 340 L80 360" stroke-width="0.3"/>
+
+                        <!-- 浮遊プラットフォーム（右） -->
+                        <path class="draw-line draw-line-21" d="M400 280 L460 280 L460 300 L400 300" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-22" d="M400 300 L420 320 M460 300 L480 320" stroke-width="0.3"/>
+
+                        <!-- ディテールライン -->
+                        <path class="draw-line draw-line-23" d="M120 200 L130 190 L370 190 L380 200" stroke-width="0.3"/>
+
+                        <!-- 寸法線（上） -->
+                        <path class="draw-line draw-line-24" d="M100 60 L100 70 M400 60 L400 70 M100 65 L400 65" stroke-width="0.3"/>
+                        <text class="dimension-text" x="250" y="58" text-anchor="middle">15,000</text>
+
+                        <!-- 寸法線（左） -->
+                        <path class="draw-line draw-line-25" d="M60 200 L70 200 M60 450 L70 450 M65 200 L65 450" stroke-width="0.3"/>
+                        <text class="dimension-text dimension-vertical" x="45" y="325" text-anchor="middle" transform="rotate(-90, 45, 325)">12,500</text>
+
+                        <!-- 縮尺表示 -->
+                        <path class="draw-line draw-line-26" d="M350 520 L450 520" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-27" d="M350 515 L350 525 M400 515 L400 525 M450 515 L450 525" stroke-width="0.3"/>
+                        <text class="dimension-text" x="400" y="540">S=1:200</text>
+
+                        <!-- 方位記号 -->
+                        <circle class="draw-line draw-line-28" cx="450" cy="100" r="20" stroke-width="0.5"/>
+                        <path class="draw-line draw-line-29" d="M450 80 L450 120 M430 100 L470 100" stroke-width="0.3"/>
+                        <path class="draw-line draw-line-30" d="M450 80 L445 90 L450 88 L455 90 Z" stroke-width="0.5" fill="currentColor"/>
+                        <text class="dimension-text" x="450" y="75" text-anchor="middle">N</text>
+
+                        <!-- アクセント：浮遊するボリューム -->
+                        <path class="draw-line draw-line-accent-1" d="M180 140 L190 130 L310 130 L320 140" stroke-width="0.75"/>
+                        <path class="draw-line draw-line-accent-2" d="M190 130 L190 110 L310 110 L310 130" stroke-width="0.5"/>
+
+                        <!-- グリッドポイント（設計基準点） -->
+                        <circle class="draw-line draw-line-31" cx="100" cy="450" r="3" stroke-width="0.5"/>
+                        <circle class="draw-line draw-line-32" cx="250" cy="450" r="3" stroke-width="0.5"/>
+                        <circle class="draw-line draw-line-33" cx="400" cy="450" r="3" stroke-width="0.5"/>
+                        <circle class="draw-line draw-line-34" cx="250" cy="100" r="3" stroke-width="0.5"/>
+                    </svg>
+
+                    <!-- 図面ラベル -->
+                    <div class="blueprint-label">
+                        <span class="text-xs tracking-[0.2em] text-gray-400 uppercase">Elevation Drawing</span>
+                        <span class="text-xs text-gray-300 ml-4">A-001</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
